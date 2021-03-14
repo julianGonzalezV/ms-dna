@@ -3,7 +3,26 @@ package service
 import (
 	"ms-dna/pkg/dna/domain/entity"
 	"ms-dna/pkg/dna/infrastructure/repotestimpl"
+	"ms-dna/shared/customerror"
 	"testing"
+)
+
+var (
+	dnaMutant = []string{
+		"ATGCGA",
+		"CAGTGC",
+		"TTATGT",
+		"AGAAGG",
+		"CCCCTA",
+		"TCACTG"}
+
+	dnaNOMutant = []string{
+		"ATGCGA",
+		"CAGTGC",
+		"TTATTT",
+		"AGACGG",
+		"GCGTCA",
+		"TCACTG"}
 )
 
 /// Validando todos los posibles valores de Ratio
@@ -25,14 +44,22 @@ func TestGetRatio(t *testing.T) {
 	}
 }
 
-func TestSaveDna(t *testing.T) {
+///TestValidateDna valida un AND mutante y otro NO mutante, note que para el No mutante se espera
+/// un error tipo customerror.ErrNoMutantDna
+func TestValidateDna(t *testing.T) {
 	serviceI := New(repotestimpl.New())
-	result := serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: []string{}})
-	if result != nil {
-		t.Errorf("Error registrando DNA")
+	error := serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: dnaMutant})
+	if error != nil {
+		t.Errorf(error.Error())
+	}
+
+	error = serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: dnaNOMutant})
+	if error != customerror.ErrNoMutantDna {
+		t.Errorf(error.Error())
 	}
 }
 
+/// TestGetStats se valida que Stats funcione correctamente
 func TestGetStats(t *testing.T) {
 	serviceI := New(repotestimpl.New())
 	_, error := serviceI.GetStats()

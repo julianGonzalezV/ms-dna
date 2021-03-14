@@ -36,14 +36,20 @@ La comunicación entre las capas se hace de manera abstracta, a fin de no depend
 
 
 # Covertura de pruebas 
-Se corren sobre el paquete de servicios de dominio (domain/service), se supone que las pruebas deberían concentrarsen allí, 
-en los demás paquetes se podrían aplicar otros tipos de  pruebas como por ejemplo las de integración
+Se corren sobre el paquete de servicios de dominio, carpeta "ms-dna/pkg/dna/domain/service", se supone 
+que las pruebas deberían concentrarsen en la capa de negocio.
+En los demás paquetes se podrían aplicar otros tipos de  pruebas como por ejemplo las de integración
 
+Ejecute el siguiente comando 
 > $ go test -cover
 
-Respuesta 
+Respuesta (Note que supera el 80%, que es la mínima permitida)
+~.../ms-dna/pkg/dna/domain/service$ go test -cover
+> PASS
+coverage: 91.8% of statements
+ok      ms-dna/pkg/dna/domain/service   0.001s
 
-> --- PASS: TestSaveDna (0.00s)
+
 
 PASS
 coverage: 83.2% of statements

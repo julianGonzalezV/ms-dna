@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 
 	"ms-dna/pkg/dna/application"
 	"ms-dna/pkg/dna/domain/repository"
@@ -14,11 +15,8 @@ import (
 	"ms-dna/shared/server"
 	"ms-dna/shared/storageconn"
 
-	"net/http"
 	"os"
 	"strconv"
-
-	"github.com/apex/gateway"
 )
 
 /// initializeRepo returns a repository based on database type name
@@ -61,11 +59,12 @@ func ClientHandler() {
 
 	// Next two lines are for AWS Conf
 
-	http.Handle("/", server.Router())
-	log.Fatal(gateway.ListenAndServe(httpAddr, nil))
+	/*
+		http.Handle("/", server.Router())
+		log.Fatal(gateway.ListenAndServe(httpAddr, nil))*/
 
 	// Next line is for Local conf
-	//log.Fatal(http.ListenAndServe(httpAddr, server.Router()))
+	log.Fatal(http.ListenAndServe(httpAddr, server.Router()))
 	fmt.Println("The server is running", httpAddr)
 
 }

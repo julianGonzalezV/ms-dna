@@ -1,6 +1,7 @@
 package service
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -8,6 +9,10 @@ var (
 	minNxn = 4
 )
 
+/// sequenceValidation valida que la Matriz de entrada sea correcta, en cuestion de:
+/// - Tamanio mímino permitido es de 4x4
+/// - Debe ser una matriz NxN, es decir misma cantidad de filas y columnas
+/// -
 func sequenceValidation(sequence []string) bool {
 	result := true
 
@@ -16,8 +21,15 @@ func sequenceValidation(sequence []string) bool {
 		result = false
 	}
 	for _, value := range sequence {
+		/// Si encuentra una cadena que posee de todo excepto ATCG entonces error
+		matched, _ := regexp.MatchString("[^ATCG]", value)
+		if matched {
+			result = false
+			break
+		}
 		if len(value) != sequenceLen {
 			result = false
+			break
 		}
 	}
 	return result

@@ -51,9 +51,12 @@ func mutant(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := dnaApp.ValidateMutant(requestPayload); err != nil {
-		log.Println(err)
+		log.Println("error ValidateMutant", err)
 		if err == customerror.ErrNoMutantDna {
 			w.WriteHeader(http.StatusForbidden)
+		}
+		if err == customerror.ErrDNASeqValidation {
+			w.WriteHeader(http.StatusBadRequest)
 		} else {
 			w.WriteHeader(http.StatusInternalServerError)
 		}

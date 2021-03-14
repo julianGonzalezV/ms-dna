@@ -12,7 +12,7 @@ request BODY:
 Posibles Responses:
 - 200 OK si es un mutante
 - 403 Forbidden si no es un mutante 
-- 400 Bad Request si el payload no cumple con la reglas de negocio 
+- 400 Bad Request si el payload no cumple con la reglas de negocio SOLO ATCG, matriz NxN con columnas y filas de igual tamanio
 - 500 Errores del servidor
 
 2) GET Stats: Calcula las estadisticas de los ADNs evaluados, indicando la cantidad de ADNs mutantes, la cantidad de ADNs no mutantes (Humanos) y la correlación entre ambos (Ratio)

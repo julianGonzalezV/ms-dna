@@ -8,7 +8,7 @@ import (
 type testRepository struct {
 }
 
-// New  create a Mongo repo
+// New  es un repositorio de prueba
 func New() repository.DnaRepository {
 	return testRepository{}
 }

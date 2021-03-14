@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-// Connect returns a new connection to storage target
+// Connect abre una conexión hacia la BD Mongo
 func Connect(addr string) *mongo.Client {
 	client, err := mongo.NewClient(options.Client().ApplyURI(addr))
 	if err != nil {

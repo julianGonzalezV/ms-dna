@@ -1,13 +1,12 @@
 package service
 
-// This component is in charge of handle domain rules
 import (
 	"ms-dna/pkg/dna/domain/entity"
 	"ms-dna/pkg/dna/domain/repository"
 	"ms-dna/shared/customerror"
 )
 
-// DnaServiceInterface interface that establishes functions to be implemented
+// DnaServiceInterface estbalece las reglas y operaciones del negocio
 type DnaServiceInterface interface {
 	ValidateDna(entity *entity.Dna) error
 	GetStats() (*entity.Ratio, error)
@@ -22,17 +21,20 @@ func New(repository repository.DnaRepository) DnaServiceInterface {
 	return &dnaService{repository}
 }
 
-// Create a new record
+// ValidateDna valida el dna y llama a guardar en la base de datos
 func (service *dnaService) ValidateDna(entity *entity.Dna) error {
 	if sequenceValidation(entity.Sequence) {
 		isM := isAMutantDna(entity.Sequence)
 		if isM {
 			entity.IsMutant = 1
+			return service.dnaRepository.SaveDna(entity)
+		} else {
+			service.dnaRepository.SaveDna(entity)
+			return customerror.ErrNoMutantDna
 		}
-		return service.dnaRepository.SaveDna(entity)
 
 	} else {
-		return customerror.DNASeqValidation
+		return customerror.ErrDNASeqValidation
 	}
 
 }

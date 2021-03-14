@@ -5,6 +5,7 @@ import (
 	"ms-dna/pkg/dna/infrastructure/request"
 )
 
+/// DnaRequestToDnaDomain mapper
 func DnaRequestToDnaDomain(request request.DnaRequest) *entity.Dna {
 	return &entity.Dna{
 		IsMutant: 0,

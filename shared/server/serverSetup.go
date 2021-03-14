@@ -7,16 +7,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Api struct {
-	router http.Handler
-}
-
-// Server ...
+// Server
 type Server interface {
 	Router() http.Handler
 }
 
-// New ...
+type Api struct {
+	router http.Handler
+}
+
+// New  inicializa el servidor, pasandole las rutas por las que escuchará
 func New(dnaRoute uRoute.DnaRoute) Server {
 	api := &Api{}
 	r := mux.NewRouter()
@@ -25,6 +25,7 @@ func New(dnaRoute uRoute.DnaRoute) Server {
 	return api
 }
 
+/// Router() se implementa para el struct Api, para que cumpla con la firma de la Interface Service
 func (a *Api) Router() http.Handler {
 	return a.router
 }

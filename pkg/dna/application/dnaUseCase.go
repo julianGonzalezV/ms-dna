@@ -17,7 +17,7 @@ type dnaUseCase struct {
 	service service.DnaServiceInterface
 }
 
-// New creates the  application from Application Layer
+// New crea la implementación de la capa deapplicación
 func New(service service.DnaServiceInterface) DnaUseCaseInterface {
 	return &dnaUseCase{service}
 }

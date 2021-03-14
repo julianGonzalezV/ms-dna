@@ -16,7 +16,7 @@ type dnaMongoRepository struct {
 	db *mongo.Client
 }
 
-// New  create a Mongo repo
+// New  es una implementación del repositorio basado en Mongo
 func New(db *mongo.Client) repository.DnaRepository {
 	return dnaMongoRepository{db: db}
 }

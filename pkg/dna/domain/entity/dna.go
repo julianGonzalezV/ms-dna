@@ -1,6 +1,6 @@
 package entity
 
-// New function is used to create a new struct
+// New devuelve la entidad de domina DNA
 func New(sequence []string) *Dna {
 	return &Dna{
 		Sequence: sequence,

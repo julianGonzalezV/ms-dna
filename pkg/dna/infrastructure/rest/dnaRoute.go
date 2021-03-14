@@ -5,6 +5,7 @@ import (
 	"log"
 	"ms-dna/pkg/dna/application"
 	"ms-dna/pkg/dna/infrastructure/request"
+	"ms-dna/shared/customerror"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,6 +15,7 @@ var (
 	dnaApp application.DnaUseCaseInterface
 )
 
+/// se configura el ruteo de la aplicación
 type DnaRoute interface {
 	AddRoutes(router *mux.Router)
 }
@@ -50,11 +52,15 @@ func mutant(w http.ResponseWriter, r *http.Request) {
 
 	if err := dnaApp.ValidateMutant(requestPayload); err != nil {
 		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
+		if err == customerror.ErrNoMutantDna {
+			w.WriteHeader(http.StatusForbidden)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		_ = json.NewEncoder(w).Encode(err)
 		return
 	}
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 }
 
 func stats(w http.ResponseWriter, r *http.Request) {

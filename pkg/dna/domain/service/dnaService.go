@@ -23,7 +23,9 @@ func New(repository repository.DnaRepository) DnaServiceInterface {
 
 // ValidateDna valida el dna y llama a guardar en la base de datos
 func (service *dnaService) ValidateDna(entity *entity.Dna) error {
+	/// Se valida que la entrada sea correcta
 	if sequenceValidation(entity.Sequence) {
+		// Se valida si es mutante
 		isM := isAMutantDna(entity.Sequence)
 		if isM {
 			entity.IsMutant = 1
@@ -34,6 +36,7 @@ func (service *dnaService) ValidateDna(entity *entity.Dna) error {
 		}
 
 	} else {
+		/// Si no es correcta no se incia el computo sino que se devuelve el error que es un BAD REQUEST
 		return customerror.ErrDNASeqValidation
 	}
 

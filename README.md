@@ -3,42 +3,62 @@ Microservicio para la validacion de DNA mutante, requerido por Magneto para el p
 combatir a los X-man :) :O 
 
 # Servicios Expuestos:
-1) POST isMutant: Recibe un arreglo de string que representan el ADN y devuelve 201 si es un mutante, de lo contrario 403
+1) POST 
+
+isMutant: Recibe un arreglo de string que representa el ADN a evnaluar 
+
 Ejemplo de consumo:
 URL: 
 > https://s2h06thmnd.execute-api.us-east-1.amazonaws.com/test/mutant
+
 request BODY:
+
 >  {"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}
+
 Posibles Responses:
 - 200 OK si es un mutante
 - 403 Forbidden si no es un mutante 
 - 400 Bad Request si el payload no cumple con la reglas de negocio SOLO ATCG, matriz NxN con columnas y filas de igual tamanio
 - 500 Errores del servidor
 
-2) GET Stats: Calcula las estadisticas de los ADNs evaluados, indicando la cantidad de ADNs mutantes, la cantidad de ADNs no mutantes (Humanos) y la correlación entre ambos (Ratio)
+2) GET 
+Stats: Calcula las estadisticas de los ADNs evaluados, indicando la cantidad de ADNs mutantes, la cantidad de ADNs no mutantes (Humanos) y la correlación entre ambos (Ratio)
+
 Ejemplo de consumo:
+
 URL:
+
 >  https://s2h06thmnd.execute-api.us-east-1.amazonaws.com/test/stats
+
 Posibles Responses:
 - 200-OK Junto con el JSON de respuesta {"count_mutant_dna": 2,"count_human_dna": 1,"ratio": 2}
 - 500 Errores del servidor
 
 
 # Detalles de la solucion
--Uso de variables de ambiente para la configuración
+- Se realiza en lenguaje Golang
+- Uso de variables de ambiente para la configuración
 
--Conexión con base de datos MONGO, proveedor Mongo Atlas que nos ofrece clusterización para mayor disponibilidad.
+- Conexión con base de datos MONGO, proveedor Mongo Atlas que nos ofrece clusterización para mayor disponibilidad.
 
--Se hospeda en AWS Lambda con el fin de soportar Auto-Escalamiento dado el reqierimiento de posibles picos de consumos 
-esto nos ayuda a ahorrar costos de mantenimiento de Infraestructura pero a la vez tiene un downside costos cuando la cantidad
-de requests empieza a superar el umbral de los 90millones de consumos al mes ..en este caso es mejor explorar opciones de 
-CONTENERIZACIÓN y hacer uno de algún servicoi nube de KUBERNETES para la gestión del balanceo, enrrutamiento 
+- Se hospeda en AWS Lambda con el fin de soportar Auto-Escalamiento dado el reqierimiento de posibles picos de consumos, esto nos ayuda a ahorrar costos de mantenimiento de Infraestructura pero a la vez tiene un downside costos cuando la cantidad de requests empieza a superar el umbral de los 90millones de consumos al mes ..en este caso es mejor explorar opciones de CONTENERIZACIÓN y hacer uno de algún servicoi nube de KUBERNETES para la gestión del balanceo, enrrutamiento 
 
 Para el diseño se hace uso de Domian Driven Design 
 - Capa de  Aplicacion 
 - capa de dominio 
 - Capa de Infraestructura
 La comunicación entre las capas se hace de manera abstracta, a fin de no depender de la implementación
+
+Diseño:
+
+![Screenshot](dna-img1.PNG)
+
+
+Despliegue:
+
+![Screenshot](dna-img2.PNG)
+
+
 
 
 # Covertura de pruebas 

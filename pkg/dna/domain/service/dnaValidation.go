@@ -12,7 +12,7 @@ var (
 /// sequenceValidation valida que la Matriz de entrada sea correcta, en cuestion de:
 /// - Tamanio mímino permitido es de 4x4
 /// - Debe ser una matriz NxN, es decir misma cantidad de filas y columnas
-/// -
+/// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
 func sequenceValidation(sequence []string) bool {
 	result := true
 
@@ -36,8 +36,8 @@ func sequenceValidation(sequence []string) bool {
 }
 
 /// isMutantDna Orquesta todos los llamados para validar de DNA
-/// Note que se utiliza un OR operator, en caso de que se cumpla uno solo de una retorna el valor
-/// sin tener que ir a los dermás caminos, esto también ayuda al algoritmo
+/// Note que se utiliza un OR operator, en caso de que se cumpla uno solo se retorna el valor
+/// sin tener que ir a los dermás caminos, esto también ayuda al rendimiento del algoritmo
 func isAMutantDna(arr []string) bool {
 	mutantValid := false
 	if searchByRowsAndColumns(arr) || searchByLeftDiagonal(arr) || searchByRigthDiagonal(arr) {
@@ -48,6 +48,7 @@ func isAMutantDna(arr []string) bool {
 
 /// searchByRowColumn recorre filas y columnas para evualuar en cada iteracion si existe un dna mutante
 //  Note que se recorren filas y columnas a la misma vez con el fin de optimizar el algoritmo
+/// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
 func searchByRowsAndColumns(arr []string) bool {
 	mutantExists := false
 	rowString := ""
@@ -74,6 +75,7 @@ func searchByRowsAndColumns(arr []string) bool {
 }
 
 /// searchByLeftDiagonal valida la existencia de un Mutante en la diagonal  con esta inclinacion => \
+/// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
 func searchByLeftDiagonal(arr []string) bool {
 	mutantExists := false
 	leftDiagonalString := ""
@@ -101,6 +103,7 @@ func searchByLeftDiagonal(arr []string) bool {
 }
 
 /// searchByRigthDiagonal valida la existencia de un Mutante en la diagonal  con esta inclinacion =>  /
+/// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
 func searchByRigthDiagonal(arr []string) bool {
 	mutantExists := false
 	rightDiagonalString := ""

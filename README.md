@@ -5,7 +5,7 @@ combatir a los X-man :) :O
 # Servicios Expuestos:
 1) POST 
 
-isMutant: Recibe un arreglo de string que representa el ADN a evnaluar 
+isMutant: Recibe un arreglo de string que representa el ADN a evaluar 
 
 Ejemplo de consumo:
 URL: 
@@ -77,14 +77,14 @@ Respuesta (Note que supera el 80%, que es la mínima permitida)
 
 
 # Notas a considerar
-Si la disponibilidad se ve afaectada dada la concurrencia y tenerlo en lambdas AWS no la soporta entonces pensar en un servicio de
+Si la disponibilidad se ve afectada dada la concurrencia y tenerlo en lambdas AWS no la soporta entonces pensar en un servicio de
 KUBERNETES 
 
 
 # Instalación Local 
 
 Primero cree un archivo .sh o .bat con las siguientes variables de ambiente
-Para los pasos que siguen a coninuación se asume que ustede creó el archivo nombrado 
+Para los pasos que siguen a continuación se asume que ustede creó el archivo nombrado 
 start_dev_linux.sh
 o 
 start_dev_windows.bat
@@ -100,22 +100,21 @@ go run main.go
 
 
 
-In your local host you have to create the next folders structrure:
+En su local debe tener la siguiente estructura de carpetas:
 XXworkspace
     bin
     src
     pkg
 
->Then, create the GOPATH environment variable, point to xxworkspace folder--ok
+>Cree GOPATH environment variable, apuntando al folder XXworkspace del paso anterior folder--ok
 
->Additionally, you  have to create  GOPATH/bin into your PATH env variable (This is a pending step, please read https://golang.org/doc/gopath_code.html before )
     
 
-# Commands to execute for local conf
+# Comandos locales
 To install gorilla mux
 $ go get -u github.com/gorilla/mux
 
-# Install the MongoDB Go Driver
+# MongoDB Go Driver
 https://blog.friendsofgo.tech/posts/driver-oficial-mongodb-golang/
 go get -u go.mongodb.org/mongo-driver
 
@@ -144,9 +143,9 @@ $ start_dev_linux.bat
 
 # Get zip to AWS lambda: 
 Process
-- Into your root project folder execute:
+- vaya al directorio raiz y ejecute :
 > $ go get github.com/aws/aws-lambda-go/lambda   (if required)
-> $ GOOS=linux go build main.go --> this command create an executable file called main as the .go name file
-> $ zip ms-dna.zip main
-Upload zip to S3 via aws cli or manually
+> $ GOOS=linux go build main.go --> Este comando crea un ejecutable llamado main.go
+> $ zip ms-dna.zip main -> cree el zip
+Finalmente, súbalo vía comandos o manualmente a Amazon S3 y asocielo a la lambda
 

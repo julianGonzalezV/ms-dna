@@ -7,6 +7,7 @@ import (
 
 var (
 	minNxn = 4
+	minSq = 1
 )
 
 /// sequenceValidation valida que la Matriz de entrada sea correcta, en cuestion de:
@@ -40,7 +41,12 @@ func sequenceValidation(sequence []string) bool {
 /// sin tener que ir a los dermás caminos, esto también ayuda al rendimiento del algoritmo
 func isAMutantDna(arr []string) bool {
 	mutantValid := false
-	if searchByRowsAndColumns(arr) || searchByLeftDiagonal(arr) || searchByRigthDiagonal(arr) {
+	isMByR, countByR := searchByRowsAndColumns(arr,minSq)
+	isMByLD, countByLD := searchByLeftDiagonal(arr,minSq)
+	isMByRD, countByRD := searchByRigthDiagonal(arr,minSq)
+	totalCount := countByR +countByLD+countByRD
+	
+	if isMByR ||isMByLD || isMByRD || totalCount > minSq {
 		mutantValid = true
 	}
 	return mutantValid
@@ -49,39 +55,47 @@ func isAMutantDna(arr []string) bool {
 /// searchByRowColumn recorre filas y columnas para evualuar en cada iteracion si existe un dna mutante
 //  Note que se recorren filas y columnas a la misma vez con el fin de optimizar el algoritmo
 /// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
-func searchByRowsAndColumns(arr []string) bool {
+func searchByRowsAndColumns(arr []string, minSeq int) (bool, int) {
+	seqCounter := 0
 	mutantExists := false
 	rowString := ""
 	columnString := ""
 	rigthDiagAux := len(arr) - 1
 	colAux := 0
 	for row := 0; row < len(arr); row++ {
+		if(seqCounter > minSeq){
+			mutantExists = true
+			break
+		}
 		rowString = ""
 		columnString = ""
 		for column := 0; column < len(arr); column++ {
 			rowString += string(arr[row][column])
 			columnString += string(arr[column][row])
 		}
-		if mutantDna(rowString) {
-			mutantExists = true
-			break
+		if mutantDna(rowString) || mutantDna(columnString) {
+			seqCounter ++			
 		}
 		colAux++
 		rigthDiagAux--
 	}
-
-	return mutantExists
+	return mutantExists,seqCounter
 
 }
 
 /// searchByLeftDiagonal valida la existencia de un Mutante en la diagonal  con esta inclinacion => \
 /// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
-func searchByLeftDiagonal(arr []string) bool {
+func searchByLeftDiagonal(arr []string, minSeq int) (bool, int) {
+	seqCounter := 0 
 	mutantExists := false
 	leftDiagonalString := ""
 	rowAux := 0
 	column := 0
 	for diag := 1 - len(arr); diag < len(arr)-1; diag++ {
+		if(seqCounter > minSeq){
+			mutantExists = true
+			break
+		}
 		rowAux = 0
 		column = 0
 		leftDiagonalString = ""
@@ -95,21 +109,25 @@ func searchByLeftDiagonal(arr []string) bool {
 			column++
 		}
 		if mutantDna(leftDiagonalString) {
-			mutantExists = true
-			break
+			seqCounter ++
 		}
 	}
-	return mutantExists
+	return mutantExists,seqCounter
 }
 
 /// searchByRigthDiagonal valida la existencia de un Mutante en la diagonal  con esta inclinacion =>  /
 /// - Note el uso de Break que ayuda a no seguir evaluando cunado se encuentra un ADN mutante
-func searchByRigthDiagonal(arr []string) bool {
+func searchByRigthDiagonal(arr []string, minSeq int) (bool, int) {
+	seqCounter := 0
 	mutantExists := false
 	rightDiagonalString := ""
 	rowAux := 0
 	column := 0
 	for diag := 1 - len(arr); diag < len(arr)-1; diag++ {
+		if(seqCounter > minSeq){
+			mutantExists = true
+			break
+		}
 		rowAux = diag
 		column = 0
 		rightDiagonalString = ""
@@ -125,12 +143,11 @@ func searchByRigthDiagonal(arr []string) bool {
 			column++
 		}
 		if mutantDna(rightDiagonalString) {
-			mutantExists = true
-			break
+			seqCounter ++
 		}
 
 	}
-	return mutantExists
+	return mutantExists,seqCounter
 }
 
 /// mutantDna contienen todas las secuencias de caracteres que representan un gen mutante

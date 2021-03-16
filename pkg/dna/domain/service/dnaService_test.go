@@ -23,6 +23,22 @@ var (
 		"AGACGG",
 		"GCGTCA",
 		"TCACTG"}
+
+	dnaMutantCols = []string{
+		"ATGCGA",
+		"CAGTGA",
+		"TTGTTA",
+		"AGTCGA",
+		"GCGTCA",
+		"TCACGG"}
+
+	dnaMutantDiag = []string{
+		"ACTCGA",
+		"CATTGA",
+		"TTATTG",
+		"AGTAGA",
+		"GCCGCA",
+		"TCGCGG"}
 )
 
 /// Validando todos los posibles valores de Ratio
@@ -42,6 +58,8 @@ func TestGetRatio(t *testing.T) {
 	if ratio.CountHumanDna != 2 {
 		t.Errorf("CountHumanDna es  %d pero se espera %d \n", ratio.CountHumanDna, 2)
 	}
+
+	
 }
 
 ///TestValidateDna valida un AND mutante y otro NO mutante, note que para el No mutante se espera
@@ -55,6 +73,16 @@ func TestValidateDna(t *testing.T) {
 
 	error = serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: dnaNOMutant})
 	if error != customerror.ErrNoMutantDna {
+		t.Errorf(error.Error())
+	}
+
+	error = serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: dnaMutantCols})
+	if error != customerror.ErrNoMutantDna {
+		t.Errorf(error.Error())
+	}
+
+	error = serviceI.ValidateDna(&entity.Dna{IsMutant: 1, Sequence: dnaMutantDiag})
+	if error != nil {
 		t.Errorf(error.Error())
 	}
 }
